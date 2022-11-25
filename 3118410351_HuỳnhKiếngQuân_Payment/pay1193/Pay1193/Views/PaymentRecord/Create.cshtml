@@ -1,0 +1,128 @@
+﻿@using System.Diagnostics
+@using System.Globalization
+@model PaymentRecordCreateViewModel
+
+<div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a asp-controller="PaymentRecord" asp-action="Index">Payment Record List</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">New Payment Record</li>
+                </ol>
+            </nav><br />
+            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <select asp-for="EmployeeId" class="form-control">
+                       
+                        @foreach(var item in ViewBag.employees)
+                        {
+                            <option value="@item.Id">@item.FullName</option>
+                           
+                        }
+                       
+                    </select>                  
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group col-md-1">
+                        <label asp-for="MonthPay"></label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select asp-for="MonthPay" class="form-control">
+                            @{
+                                var monthName = DateTimeFormatInfo.CurrentInfo.MonthNames;
+                                
+
+                               for (int i = 0; i < monthName.Length - 1; i++)
+                                {
+                                    var date = new DateTime(DateTime.Now.Year, i + 1, DateTime.Now.Day);
+                                    <option value="@date">@monthName[i]</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="MonthPay" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group col-md-1">
+                        <label>Tax Year</label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select asp-for="TaxYearId" class="form-control">
+                            @foreach(var item in ViewBag.taxYears)
+                            {
+                                <option value = "@item.Id">@item.YearOfTax</option>
+                            }
+                        </select>
+                        <span asp-validation-for="TaxYearId" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group col-md-1">
+                        <label asp-for="DatePay"></label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="date" class="form-control" asp-for="DatePay" />
+                        <span asp-validation-for="DatePay" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group col-md-1">
+                        <label asp-for="HourlyRate"></label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" asp-for="HourlyRate" placeholder="0.00"/>
+                        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                    </div>
+
+
+
+                    
+                    <div class="form-group col-md-1">
+                        <label asp-for="HourWorked"></label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" asp-for="HourWorked" placeholder="0.00"/>
+                        <span asp-validation-for="HourWorked" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="form-group col-md-1">
+                        <label asp-for="ContractualHours"></label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" asp-for="ContractualHours" placeholder="0.00" />
+                        <span asp-validation-for="ContractualHours" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary btn-rounded float-left" style="margin-right:auto.7em">Compute & Save</button>
+                    <a asp-controller="PaymentRecord" asp-action="Index" class="btn btn-primary btn-rounded float-right" style="margin-right:auto.7em">Back to Pay List</a>
+                    <br />
+                    <br />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_validationScriptsPartial");
+    }
+    }
